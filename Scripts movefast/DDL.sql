@@ -1,0 +1,65 @@
+-- CREACION DE TABLAS PARA LA EMPRESA MOVEFAST
+
+-- CREACION DE LA TABLA CLIENTES
+
+CREATE TABLE clientes(
+	ncedula INTEGER PRIMARY KEY, 
+	nombre VARCHAR(20) NOT NULL,
+	apellido VARCHAR(20) NOT NULL, 
+	edad INTEGER NOT NULL CHECK(edad>0),
+	fecha_de_registro TIMESTAMP NOT NULL,
+	ciudad VARCHAR(20) NOT NULL
+);
+
+-- CREACION DE LA TABLA SUCURSALES
+
+CREATE TABLE sucursal(
+	idsucursal SERIAL PRIMARY KEY,
+	ciudad VARCHAR(20) NOT NULL,
+	dirrecion VARCHAR(20) NOT NULL,
+	ncel VARCHAR(10) NOT NULL
+);
+
+
+--CREACION DE LA TABLA DE VEHICULOS
+
+CREATE TABLE vehiculo(
+	placa VARCHAR(6),
+	marca VARCHAR(20) NOT NULL,
+	modelo INTEGER CHECK (modelo BETWEEN 1950 AND 2050),
+	color VARCHAR(20) NOT NULL,
+	ntraccion_ruedas INT DEFAULT 2 CHECK (ntraccion_ruedas IN(2,4)),
+	disponible BOOLEAN DEFAULT TRUE,
+	sucursal INTEGER,
+	PRIMARY KEY(placa),
+	FOREIGN KEY(sucursal) REFERENCES sucursal(idsucursal)
+	ON UPDATE CASCADE 
+	ON DELETE SET NULL
+);
+
+-- CREACION DE LA TABLA DE ALQUILERES
+
+CREATE TABLE alquiler(
+	idalquiler SERIAL PRIMARY KEY,
+	clienteid INTEGER,
+	vehiculoPlaca VARCHAR(6),
+	fechaentrada TIMESTAMP NOT NULL,
+	fechasalida TIMESTAMP NOT NULL,
+	alquiler_activo BOOLEAN DEFAULT TRUE,
+	CONSTRAINT fk_clienteid FOREIGN KEY (clienteid) REFERENCES cliente(ncedula) 
+	ON UPDATE CASCADE 
+	ON DELETE CASCADE,
+	CONSTRAINT fk_vehiculoPlaca FOREIGN KEY (vehiculoPlaca) REFERENCES vehiculo(placa) 
+	ON UPDATE CASCADE 
+	ON DELETE SET NULL
+);
+
+-- CREACION DE LA TABLA DE PAGOS
+
+CREATE TABLE pago(
+	idpago SERIAL PRIMARY KEY,
+	idalquiler INTEGER,
+	valor DECIMAL(10,2) NOT NULL CHECK(valor > 0),
+	FOREIGN KEY(idalquiler) REFERENCES alquiler(idalquiler)
+	ON DELETE SET NULL
+);
