@@ -39,3 +39,39 @@ INSERT INTO pago VALUES (200, 100, -50000.00), -- Error: valor negativo (violaci
 (201, 999, 30000.00), -- Error: alquiler no existe (violación de FK)
 
 (200, 101, 25000.00); -- Error: clave primaria duplicada (idpago repetido)
+
+
+-- VERIFICACION ON DELETE CASCADE
+-- Insertar un cliente y un alquiler asociado
+INSERT INTO cliente VALUES 
+(999999, 'Carlos', 'López', 30, CURRENT_TIMESTAMP, 'Cali');
+
+INSERT INTO alquiler VALUES 
+(999, 999999, 'ABC123', '2025-04-01', '2025-04-10', TRUE);
+
+-- Verificamos que el alquiler fue creado
+SELECT * FROM alquiler WHERE clienteid = 999999;
+
+-- Paso 2: Eliminar el cliente
+DELETE FROM cliente WHERE ncedula = 999999;
+
+-- Verificar que el alquiler relacionado también fue eliminado automáticamente
+SELECT * FROM alquiler WHERE clienteid = 999999;
+
+--VERIFICACION DEL ON UPDATE CASCADE
+
+-- Crear una sucursal y un vehículo asociado
+INSERT INTO sucursal (idsucursal, ciudad, dirrecion, ncel) VALUES 
+(555, 'Bogotá', 'Av 5', '3011234567');
+
+INSERT INTO vehiculo VALUES 
+('CAS321', 'Toyota', 2020, 'Rojo', 4, TRUE, 555);
+
+-- Verificar que el vehículo fue insertado con la sucursal 555
+SELECT * FROM vehiculo WHERE placa = 'CAS321';
+
+-- Paso 2: Actualizar la sucursal (idsucursal)
+UPDATE sucursal SET idsucursal = 556 WHERE idsucursal = 555;
+
+-- Verificar que el vehículo también se actualizó automáticamente
+SELECT * FROM vehiculo WHERE placa = 'CAS321';
