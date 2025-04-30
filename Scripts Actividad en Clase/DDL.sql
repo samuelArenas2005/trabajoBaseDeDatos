@@ -49,8 +49,16 @@ CREATE TABLE factura (
     CONSTRAINT fk_cliente 
         FOREIGN KEY (id_cliente) 
         REFERENCES Cliente(id_cliente),
-    FOREIGN KEY (id_mesero) REFERENCES Mesero(id_mesero),
-    FOREIGN KEY (id_mesa) REFERENCES Mesa(id_mesa),
-    FOREIGN KEY (id_platillo) REFERENCES Platillo(id_platillo),
+    FOREIGN KEY (id_mesero) REFERENCES Mesero(id_mesero)
+    ON UPDATE CASCADE
+    ON DELETE SET NULL,
+    FOREIGN KEY (id_mesa) REFERENCES Mesa(id_mesa)
+     ON UPDATE CASCADE
+    ON DELETE SET NULL,
+    FOREIGN KEY (id_platillo) REFERENCES Platillo(id_platillo)
+     ON UPDATE CASCADE
+    ON DELETE SET NULL,
     FOREIGN KEY (id_bebida) REFERENCES Bebida(id_bebida)
+     ON UPDATE CASCADE
+    ON DELETE SET NULL
 );
