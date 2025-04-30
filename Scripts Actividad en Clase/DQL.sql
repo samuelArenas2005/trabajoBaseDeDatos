@@ -12,7 +12,7 @@ JOIN platillo p ON f.id_platillo = p.id_platillo WHERE p.nombre = 'arroz a la ma
 
 SELECT m.nombre, f.fecha_facutra FROM factura f JOIN mesero m ON m.id_mesero = f.id_mesero 
 JOIN mesa me ON f.id_mesa = me.id_mesa 
-WHERE me.ubicacion = 'segundo piso';
+WHERE me.ubicacion = 'segundo piso' and me.id_mesa = 10;
 
 SELECT m.nombre, f.fecha_facutra FROM factura f JOIN mesero m ON m.id_mesero = f.id_mesero 
 JOIN mesa me ON f.id_mesa = me.id_mesa 
